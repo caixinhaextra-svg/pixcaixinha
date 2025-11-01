@@ -1,6 +1,7 @@
 {
   "name": "pixcaixinha",
   "version": "1.0.0",
+  "description": "Servidor Node.js para integração Pix com Efí (Caixinha Extra)",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -10,5 +11,10 @@
     "express": "^4.18.2",
     "sdk-node-apis-efi": "^2.1.0",
     "dotenv": "^16.3.1"
-  }
+  },
+  "engines": {
+    "node": ">=20.x"
+  },
+  "author": "Caixinha Extra",
+  "license": "MIT"
 }
