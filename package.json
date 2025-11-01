@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "sdk-node-apis-efi": "^2.1.0",
+    "sdk-node-apis-efi": "github:efipay/sdk-node-apis-efi",
     "dotenv": "^16.3.1"
   },
   "engines": {
