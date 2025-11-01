@@ -9,13 +9,14 @@ app.use(express.json());
 
 // ⚙️ Configurações EFI
 const options = {
-  sandbox: true, // false = produção
+  sandbox: true,
   client_id: process.env.CLIENT_ID,
   client_secret: process.env.CLIENT_SECRET,
-  certificate: fs.readFileSync("./certs/certificado.crt.pem"),
-  privateKey: fs.readFileSync("./certs/certificado.key.pem"),
+  certificate: Buffer.from(process.env.CERT_PEM, "utf-8"),
+  privateKey: Buffer.from(process.env.KEY_PEM, "utf-8"),
   cert_base64: false
 };
+
 
 // Inicializa o SDK
 const efipay = new EfiPay(options);
