@@ -1,63 +1,33 @@
 import express from "express";
+import EfiPay from "sdk-node-apis-efi";
 import fs from "fs";
-import EfiPay from "efipay";
 import dotenv from "dotenv";
 
 dotenv.config();
 const app = express();
 app.use(express.json());
 
+// ⚙️ Configurações EFI
 const options = {
-  sandbox: true,
+  sandbox: true, // false = produção
   client_id: process.env.CLIENT_ID,
   client_secret: process.env.CLIENT_SECRET,
-  certificate: fs.readFileSync(process.env.CERT_PATH),
+  certificate: fs.readFileSync("./certs/certificado.crt.pem"),
+  privateKey: fs.readFileSync("./certs/certificado.key.pem"),
+  cert_base64: false
 };
 
+// Inicializa o SDK
 const efipay = new EfiPay(options);
 
-app.get("/", (req, res) => {
-  res.send("✅ Servidor da Caixinha Extra rodando com sucesso!");
-});
-
-app.post("/pix", async (req, res) => {
+// 🚀 Rota de teste
+app.get("/", async (req, res) => {
   try {
-    const { valor, cliente, mes } = req.body;
-
-    if (!valor || !cliente || !mes) {
-      return res.status(400).json({ sucesso: false, erro: "Campos obrigatórios ausentes." });
-    }
-
-    const body = {
-      calendario: { expiracao: 3600 },
-      valor: { original: valor.toFixed(2) },
-      chave: process.env.PIX_KEY,
-      solicitacaoPagador: `Mensalidade ${mes} - ${cliente}`,
-    };
-
-    console.log("🧾 Criando cobrança PIX:", body);
-
-    const cobranca = await efipay.createImmediateCharge([], body);
-    const qrCode = await efipay.generateQRCode({ id: cobranca.loc.id });
-
-    const resultado = {
-      sucesso: true,
-      cliente,
-      mes,
-      valor,
-      txid: cobranca.txid,
-      qrCode: qrCode.imagemQrcode,
-      copiaECola: qrCode.qrcode,
-    };
-
-    console.log("✅ PIX gerado com sucesso:", resultado);
-    res.json(resultado);
-  } catch (erro) {
-    console.error("❌ Erro ao gerar PIX:", erro);
-    res.status(500).json({
-      sucesso: false,
-      erro: erro.message || "Erro desconhecido ao gerar PIX",
-    });
+    const response = await efipay.get("gn.status", {});
+    res.json({ sucesso: true, data: response });
+  } catch (error) {
+    console.error("❌ Erro EFI:", error);
+    res.status(500).json({ sucesso: false, erro: error.message });
   }
 });
 

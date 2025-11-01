@@ -1,27 +1,15 @@
-# 🏦 PixCaixinha - Servidor Node.js (Pix via EfiPay)
+# 💸 Pix Caixinha — Integração com EfiPay
 
-Servidor Node.js com autenticação mTLS integrado à API Pix da EfiPay, criado para o projeto **Caixinha Extra 2026**.
+Servidor Node.js para integração Pix com a API da EfiPay.
 
-## 🚀 Como usar
+## Como usar
+1. Crie um serviço **Web Service** no [Render.com](https://render.com)
+2. Faça upload deste pacote.
+3. Configure as variáveis de ambiente:
+   - `CLIENT_ID`
+   - `CLIENT_SECRET`
+   - `CERTIFICADO_PIX` (em Base64)
+   - `PORT` (opcional)
+4. Deploy com: `npm install && npm start`
 
-### 1️⃣ Rodar localmente
-```bash
-npm install
-npm start
-```
-Acesse em [http://localhost:3000](http://localhost:3000)
-
-### 2️⃣ Deploy no Render
-1. Crie um repositório no GitHub com esses arquivos
-2. No Render, escolha **New → Web Service**
-3. Configure:
-   - Environment: Node
-   - Build Command: npm install
-   - Start Command: npm start
-4. Adicione as variáveis do `.env.example`
-5. Envie manualmente o `certificado.p12` para `/etc/ssl/certs/`
-6. Após o deploy, teste:
-```
-GET  https://pixcaixinha.onrender.com/
-POST https://pixcaixinha.onrender.com/pix
-```
+Servidor padrão: `https://pixcaixinha.onrender.com`
