@@ -74,10 +74,17 @@ app.post("/pix", async (req, res) => {
       copiaECola: qrcode.qrcode
     });
   } catch (err) {
-    console.error("❌ Erro na rota /pix:", err);
-    res.status(500).json({ sucesso: false, erro: err.message });
-  }
-});
+  console.error("❌ ERRO DETALHADO NA ROTA /PIX:");
+  console.error("Mensagem:", err.message);
+  console.error("Stack:", err.stack);
+  console.error("Resposta completa:", err.response?.data || err);
+  res.status(500).json({
+    sucesso: false,
+    erro: err.message,
+    detalhes: err.response?.data || null
+  });
+}
+
 
 // 🟩 Porta dinâmica (Render usa process.env.PORT)
 const PORT = process.env.PORT || 3000;
